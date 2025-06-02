@@ -7,10 +7,11 @@ from database import get_db
 from database.models import MovieModel
 from schemas.movies import MovieDetailResponseSchema, MovieListResponseSchema
 
-router = APIRouter()
+
+router = APIRouter(prefix="/api/v1/theater/movies")
 
 
-@router.get("/movies/", response_model=MovieListResponseSchema)
+@router.get("/", response_model=MovieListResponseSchema)
 async def get_movies(
         page: int = Query(1, ge=1),
         per_page: int = Query(10, ge=1, le=20),
@@ -49,7 +50,7 @@ async def get_movies(
     }
 
 
-@router.get("/movies/{movie_id}/", response_model=MovieDetailResponseSchema)
+@router.get("/{movie_id}/", response_model=MovieDetailResponseSchema)
 async def get_movie_details(
         movie_id: int,
         db: AsyncSession = Depends(get_db)
